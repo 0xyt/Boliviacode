@@ -1,12 +1,12 @@
 'use client'
-import { Home, Grid3x3, CreditCard, Image, HelpCircle, MessageCircle, Sparkles } from 'lucide-react'
+import { Circle, Star, Grid2x2, DollarSign, Square, HelpCircle, MessageCircle } from 'lucide-react'
 
 const navItems = [
-  { id: 'inicio', icon: Home, label: 'Inicio' },
-  { id: 'dedicatorias', icon: Sparkles, label: 'Dedicatorias' },
-  { id: 'servicios', icon: Grid3x3, label: 'Servicios' },
-  { id: 'precios', icon: CreditCard, label: 'Precios' },
-  { id: 'portafolio', icon: Image, label: 'Portafolio' },
+  { id: 'inicio', icon: Circle, label: 'Inicio' },
+  { id: 'dedicatorias', icon: Star, label: 'Dedicatorias' },
+  { id: 'servicios', icon: Grid2x2, label: 'Servicios' },
+  { id: 'precios', icon: DollarSign, label: 'Precios' },
+  { id: 'portafolio', icon: Square, label: 'Portafolio' },
   { id: 'faq', icon: HelpCircle, label: 'FAQ' },
   { id: 'contacto', icon: MessageCircle, label: 'Contacto' },
 ]
