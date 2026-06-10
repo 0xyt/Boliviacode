@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import {
-  ChevronRight, Sparkles, Globe, Image, UtensilsCrossed,
+  ChevronDown, ChevronRight, Sparkles, Globe, Image, UtensilsCrossed,
   Code, Zap, Shield, Play, ExternalLink,
   MessageCircle, Heart, Star
 } from 'lucide-react'
@@ -11,6 +11,8 @@ import FloatingWhatsApp from '@/components/FloatingWhatsApp'
 import ScrollReveal from '@/components/ScrollReveal'
 import DemoCanvas from '@/components/DemoCanvas'
 import PortfolioModal from '@/components/PortfolioModal'
+import BottomNav from '@/components/BottomNav'
+import PriceSection from '@/components/PriceSection'
 import SideNav from '@/components/SideNav'
 
 const digitalServices = [
@@ -55,13 +57,6 @@ const dedications = [
   },
 ]
 
-const benefits = [
-  { icon: Code, title: 'Código limpio y moderno', desc: 'Next.js, TypeScript, Tailwind CSS y Canvas. Tecnología que funciona en cualquier dispositivo.' },
-  { icon: Zap, title: 'Entrega relámpago', desc: 'Dedicatorias animadas en 48 horas. Páginas web y catálogos en 7 a 10 días.' },
-  { icon: Shield, title: '30 días de ajustes gratis', desc: 'No te dejamos solo. Después de entregar, tienes un mes de soporte sin costo.' },
-  { icon: Heart, title: 'Precios en bolivianos', desc: 'Desde 50 Bs una dedicatoria animada. Desde 300 Bs una página web. Accesible y transparente.' },
-]
-
 const faqs = [
   { q: '¿Qué es una dedicatoria animada en HTML?', a: 'Es una experiencia digital interactiva que combina texto animado, partículas, efectos visuales y música. Se abre en cualquier navegador, se ve en celulares y se puede compartir por enlace.' },
   { q: '¿Se puede ver en cualquier celular?', a: 'Sí, todas nuestras creaciones son 100% responsivas. Se ven perfectas en iPhone, Android, tablets y computadoras.' },
@@ -69,7 +64,7 @@ const faqs = [
   { q: '¿Cuánto cuesta una dedicatoria animada?', a: 'Desde 50 Bs una dedicatoria simple con animaciones predefinidas. Las versiones más elaboradas con efectos personalizados pueden llegar a 150 Bs.' },
   { q: '¿Entregan el código fuente?', a: 'Sí, 100% tuyo. Te entregamos todo el código, los archivos y te ayudamos a publicarlo. No quedas atado a nosotros.' },
   { q: '¿Hacen páginas web para negocios pequeños?', a: 'Sí, desde 300 Bs. Ideal para emprendedores, restaurantes, tiendas, artistas y profesionales que quieren presencia digital profesional.' },
-  { q: '¿Cómo es el proceso para un menú QR?', a: 'Nos envías tu carta (en PDF, foto oWord). Nosotros la digitalizamos con fotos, precios y categorías. Te entregamos el código QR para imprimir y poner en las mesas.' },
+  { q: '¿Cómo es el proceso para un menú QR?', a: 'Nos envías tu carta (en PDF, foto o Word). Nosotros la digitalizamos con fotos, precios y categorías. Te entregamos el código QR para imprimir y poner en las mesas.' },
   { q: '¿Ofrecen mantenimiento?', a: 'Sí, tenemos planes mensuales desde 50 Bs que incluyen actualizaciones, soporte técnico y cambios de contenido.' },
 ]
 
@@ -92,7 +87,7 @@ export default function Home() {
       <SideNav />
       <main className="paper-texture">
         {/* SECTION 1: HERO */}
-        <section id="hero" className="relative h-screen flex items-center justify-center overflow-hidden">
+        <section id="inicio" className="relative h-screen flex items-center justify-center overflow-hidden">
           <motion.div style={{ opacity: opacityHero, scale: scaleHero }} className="absolute inset-0 z-0">
             <div className="absolute inset-0 bg-gradient-to-b from-paper/95 via-paper/80 to-paper/95" />
           </motion.div>
@@ -151,16 +146,23 @@ export default function Home() {
               </a>
             </motion.div>
           </div>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.2, duration: 0.8 }}
-            className="absolute bottom-8 left-1/2 -translate-x-1/2"
+
+          {/* Flecha animada hacia abajo */}
+          <motion.button
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              delay: 1.2,
+              duration: 0.8,
+              repeat: Infinity,
+              repeatType: "reverse",
+            }}
+            className="absolute bottom-5 left-1/2 -translate-x-1/2 z-10 cursor-pointer p-3 min-w-[44px] min-h-[44px] flex items-center justify-center"
+            onClick={() => document.getElementById('servicios')?.scrollIntoView({ behavior: 'smooth' })}
+            aria-label="Desplazar a servicios"
           >
-            <div className="w-6 h-10 border-2 border-accent/40 rounded-full flex justify-center">
-              <div className="w-1 h-2 bg-accent/60 rounded-full animate-bounce mt-2" />
-            </div>
-          </motion.div>
+            <ChevronDown className="w-8 h-8 text-accent/70 md:w-10 md:h-10" />
+          </motion.button>
         </section>
 
         {/* SECTION 2: PRODUCTO ESTRELLA - DEDICATORIAS ANIMADAS */}
@@ -241,7 +243,7 @@ export default function Home() {
         <section className="py-24 bg-ink/5" id="servicios">
           <div className="container-premium">
             <ScrollReveal>
-              <h2 className="heading-serif text-center text-4xl md:text-5xl">Más servicios digitales</h2>
+              <h2 className="heading-serif text-center text-4xl md:text-5xl">Servicios digitales</h2>
               <p className="body-text text-center text-ink/60 max-w-2xl mx-auto mt-4">
                 Tecnología artesanal para tu negocio o proyecto personal.
               </p>
@@ -302,11 +304,14 @@ export default function Home() {
           </div>
         </section>
 
-        {/* SECTION 5: PORTAFOLIO / DEMOS */}
+        {/* SECTION 5: PRECIOS */}
+        <PriceSection />
+
+        {/* SECTION 6: PORTAFOLIO / DEMOS */}
         <section id="portafolio" className="py-24 bg-ink/5">
           <div className="container-premium">
             <ScrollReveal>
-              <h2 className="heading-serif text-center text-4xl">Proyectos que hablan por nosotros</h2>
+              <h2 className="heading-serif text-center text-4xl">Proyectos realizados</h2>
               <p className="body-text text-center text-ink/60 mt-2 max-w-2xl mx-auto">
                 Cada línea de código cuenta una historia.
               </p>
@@ -355,31 +360,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* SECTION 6: POR QUÉ ELEGIRNOS */}
-        <section id="precios" className="py-24">
-          <div className="container-premium">
-            <ScrollReveal>
-              <h2 className="heading-serif text-center text-4xl">Por qué BoliviaCode</h2>
-              <p className="body-text text-center text-ink/60 mt-2 max-w-xl mx-auto">
-                No solo escribimos código. Creamos experiencias que emocionan.
-              </p>
-            </ScrollReveal>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-16">
-              {benefits.map((item, idx) => (
-                <ScrollReveal key={idx} delay={idx * 0.08}>
-                  <div className="text-center group">
-                    <div className="w-16 h-16 rounded-full bg-accent/5 flex items-center justify-center mx-auto mb-5 group-hover:bg-accent/10 transition-colors">
-                      <item.icon className="w-7 h-7 text-accent" />
-                    </div>
-                    <h3 className="font-serif text-lg font-medium">{item.title}</h3>
-                    <p className="mt-2 text-sm text-ink/70">{item.desc}</p>
-                  </div>
-                </ScrollReveal>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* SECTION 7: FAQ */}
         <section id="faq" className="py-24 bg-paper border-t border-accent-light/20">
           <div className="container-premium max-w-3xl mx-auto">
@@ -392,7 +372,7 @@ export default function Home() {
                   <details className="group border-b border-accent-light/30 pb-4">
                     <summary className="flex justify-between items-center cursor-pointer list-none py-3 font-medium text-lg">
                       <span>{faq.q}</span>
-                      <ChevronRight className="w-5 h-5 transition-transform group-open:rotate-90 shrink-0 ml-4" />
+                      <ChevronDown className="w-5 h-5 transition-transform group-open:rotate-180 shrink-0 ml-4" />
                     </summary>
                     <p className="text-ink/70 pb-3 pl-2">{faq.a}</p>
                   </details>
@@ -436,13 +416,15 @@ export default function Home() {
         </section>
 
         {/* FOOTER */}
-        <footer className="py-12 border-t border-accent-light/20">
+        <footer className="py-12 pb-24 sm:pb-12 border-t border-accent-light/20">
           <div className="container-premium text-center">
             <div className="flex flex-wrap justify-center gap-6 mb-6 text-sm text-ink/50">
-              <a href="#dedicatorias" className="hover:text-accent transition-colors">Dedicatorias</a>
+              <a href="#inicio" className="hover:text-accent transition-colors">Inicio</a>
               <a href="#servicios" className="hover:text-accent transition-colors">Servicios</a>
-              <a href="#" className="hover:text-accent transition-colors">Políticas de privacidad</a>
-              <a href="#" className="hover:text-accent transition-colors">Términos de servicio</a>
+              <a href="#precios" className="hover:text-accent transition-colors">Precios</a>
+              <a href="#portafolio" className="hover:text-accent transition-colors">Portafolio</a>
+              <a href="#faq" className="hover:text-accent transition-colors">FAQ</a>
+              <a href="#contacto" className="hover:text-accent transition-colors">Contacto</a>
             </div>
             <p className="text-ink/50 text-sm">
               © 2025 BoliviaCode – Experiencias digitales personalizadas. Hecho con código y corazón en Bolivia.
@@ -450,6 +432,7 @@ export default function Home() {
           </div>
         </footer>
       </main>
+      <BottomNav />
     </>
   )
 }

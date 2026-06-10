@@ -4,14 +4,7 @@ import { useState } from 'react'
 import { MessageCircle, X, Sparkles, Globe, Image, UtensilsCrossed } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
-interface WhatsAppOption {
-  icon: typeof Sparkles
-  label: string
-  desc: string
-  href: string
-}
-
-const options: WhatsAppOption[] = [
+const options = [
   {
     icon: Sparkles,
     label: 'Dedicatoria animada',
@@ -42,7 +35,7 @@ export default function FloatingWhatsApp() {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-20 right-4 z-50">
       <AnimatePresence>
         {isOpen && (
           <motion.div
