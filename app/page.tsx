@@ -416,7 +416,7 @@ export default function Home() {
         </section>
 
         {/* FOOTER */}
-        <footer className="py-12 pb-24 sm:pb-12 border-t border-accent-light/20">
+        <footer className="py-12 pb-28 sm:pb-12 border-t border-accent-light/20">
           <div className="container-premium text-center">
             <div className="flex flex-wrap justify-center gap-6 mb-6 text-sm text-ink/50">
               <a href="#inicio" className="hover:text-accent transition-colors">Inicio</a>

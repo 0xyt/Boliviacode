@@ -35,7 +35,7 @@ export default function FloatingWhatsApp() {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <div className="fixed bottom-20 right-4 z-50">
+    <div className="fixed bottom-20 right-4 z-[1000]">
       <AnimatePresence>
         {isOpen && (
           <motion.div
