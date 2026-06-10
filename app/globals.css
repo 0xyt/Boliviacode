@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --paper: #FAF7F2;
+  --ink: #2C2418;
+  --accent: #8B6914;
+  --accent-light: #C4A35A;
+  --detail: #5C4A1E;
+}
+
+body {
+  background-color: var(--paper);
+  color: var(--ink);
+}
+
+.paper-texture {
+  background-image: url('/paper-texture.png');
+  background-size: cover;
+}
+
+.container-premium {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.heading-serif {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.body-text {
+  font-family: 'Inter', system-ui, sans-serif;
+  line-height: 1.7;
+}
