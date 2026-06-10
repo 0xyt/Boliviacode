@@ -318,15 +318,15 @@ export default function Home() {
             </ScrollReveal>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-16">
               {[
-                { title: 'Dedicatoria "Te Amo"', type: 'HTML + Canvas', desc: 'Animación de partículas con texto animado y confeti.', emoji: '❤️', demo: 'love' },
-                { title: 'Menú QR — Café Central', type: 'Menú digital', desc: 'Menú interactivo con categorías, fotos y WhatsApp.', emoji: '☕', demo: null },
-                { title: 'Catálogo — Tienda Moda', type: 'Catálogo digital', desc: 'Catálogo de ropa con filtros, galería y pedidos por WhatsApp.', emoji: '👗', demo: null },
-                { title: 'Web — Artista Local', type: 'Página web', desc: 'Portafolio con galería, blog y formulario de contacto.', emoji: '🎨', demo: null },
+                { title: 'Dedicatoria "Te Amo"', type: 'HTML + Canvas', desc: 'Animación de partículas con texto animado y confeti.', demo: 'love' },
+                { title: 'Menú QR — Café Central', type: 'Menú digital', desc: 'Menú interactivo con categorías, fotos y WhatsApp.', demo: null },
+                { title: 'Catálogo — Tienda Moda', type: 'Catálogo digital', desc: 'Catálogo de ropa con filtros, galería y pedidos por WhatsApp.', demo: null },
+                { title: 'Web — Artista Local', type: 'Página web', desc: 'Portafolio con galería, blog y formulario de contacto.', demo: null },
               ].map((item, idx) => (
                 <ScrollReveal key={idx} delay={idx * 0.08}>
                   <div className="group bg-paper border border-accent-light/20 overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
                     <div className="aspect-[4/3] bg-gradient-to-br from-accent-light/20 to-accent/5 flex items-center justify-center">
-                      <span className="text-5xl">{item.emoji}</span>
+                      <span className="text-accent font-serif italic text-sm opacity-40">{item.type}</span>
                     </div>
                     <div className="p-5">
                       <p className="text-[10px] uppercase tracking-[0.15em] text-accent font-medium">{item.type}</p>
