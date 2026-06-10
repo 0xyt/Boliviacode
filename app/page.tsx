@@ -11,6 +11,7 @@ import FloatingWhatsApp from '@/components/FloatingWhatsApp'
 import ScrollReveal from '@/components/ScrollReveal'
 import DemoCanvas from '@/components/DemoCanvas'
 import PortfolioModal from '@/components/PortfolioModal'
+import SideNav from '@/components/SideNav'
 
 const digitalServices = [
   {
@@ -88,9 +89,10 @@ export default function Home() {
     <>
       <FloatingWhatsApp />
       <PortfolioModal isOpen={modalOpen} onClose={() => setModalOpen(false)} demoId={activeDemo} />
+      <SideNav />
       <main className="paper-texture">
         {/* SECTION 1: HERO */}
-        <section className="relative h-screen flex items-center justify-center overflow-hidden">
+        <section id="hero" className="relative h-screen flex items-center justify-center overflow-hidden">
           <motion.div style={{ opacity: opacityHero, scale: scaleHero }} className="absolute inset-0 z-0">
             <div className="absolute inset-0 bg-gradient-to-b from-paper/95 via-paper/80 to-paper/95" />
           </motion.div>
@@ -301,7 +303,7 @@ export default function Home() {
         </section>
 
         {/* SECTION 5: PORTAFOLIO / DEMOS */}
-        <section className="py-24 bg-ink/5">
+        <section id="portafolio" className="py-24 bg-ink/5">
           <div className="container-premium">
             <ScrollReveal>
               <h2 className="heading-serif text-center text-4xl">Proyectos que hablan por nosotros</h2>
@@ -354,7 +356,7 @@ export default function Home() {
         </section>
 
         {/* SECTION 6: POR QUÉ ELEGIRNOS */}
-        <section className="py-24">
+        <section id="precios" className="py-24">
           <div className="container-premium">
             <ScrollReveal>
               <h2 className="heading-serif text-center text-4xl">Por qué BoliviaCode</h2>
@@ -379,7 +381,7 @@ export default function Home() {
         </section>
 
         {/* SECTION 7: FAQ */}
-        <section className="py-24 bg-paper border-t border-accent-light/20">
+        <section id="faq" className="py-24 bg-paper border-t border-accent-light/20">
           <div className="container-premium max-w-3xl mx-auto">
             <ScrollReveal>
               <h2 className="heading-serif text-center text-4xl">Preguntas frecuentes</h2>
@@ -401,7 +403,7 @@ export default function Home() {
         </section>
 
         {/* SECTION 8: CTA FINAL */}
-        <section className="py-32 bg-gradient-to-b from-paper to-accent-light/5 relative overflow-hidden">
+        <section id="contacto" className="py-32 bg-gradient-to-b from-paper to-accent-light/5 relative overflow-hidden">
           <div className="container-premium text-center relative z-10">
             <ScrollReveal>
               <div className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-accent bg-accent/5 px-4 py-2 rounded-full mb-6">
