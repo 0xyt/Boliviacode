@@ -1,29 +1,53 @@
 'use client'
-import { useEffect, useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { ChevronRight, Heart, Feather, Clock, MapPin, MessageCircle } from 'lucide-react'
+import {
+  ChevronRight, Heart, Feather, Clock, MapPin, MessageCircle,
+  Code, Monitor, BookOpen, Utensils, ExternalLink
+} from 'lucide-react'
 import FloatingWhatsApp from '@/components/FloatingWhatsApp'
 import ScrollReveal from '@/components/ScrollReveal'
-import Image from 'next/image'
+import ServiceSelector from '@/components/ServiceSelector'
+import PortfolioGallery from '@/components/PortfolioGallery'
+
+const physicalServices = [
+  { icon: Heart, title: 'Cartas de amor', desc: 'Declaraciones sinceras que quedan grabadas en el papel y en el corazón.', whatsapp: 'https://wa.me/59170000000?text=Quiero%20una%20carta%20de%20amor%20personalizada' },
+  { icon: Feather, title: 'Cartas de disculpa', desc: 'Un "lo siento" escrito a mano pesa más que mil disculpas rápidas.', whatsapp: 'https://wa.me/59170000000?text=Quiero%20una%20carta%20de%20disculpa' },
+  { icon: Clock, title: 'Cartas de agradecimiento', desc: 'A un amigo, a un padre, a quien estuvo ahí sin pedir nada.', whatsapp: 'https://wa.me/59170000000?text=Quiero%20una%20carta%20de%20agradecimiento' },
+  { icon: MapPin, title: 'Cartas de aniversario', desc: 'Celebra el tiempo compartido con palabras que perduran.', whatsapp: 'https://wa.me/59170000000?text=Quiero%20una%20carta%20de%20aniversario' },
+  { icon: Heart, title: 'Cartas sorpresa', desc: 'Porque la rutina mata lo especial. Sorpréndele sin motivo.', whatsapp: 'https://wa.me/59170000000?text=Quiero%20una%20carta%20sorpresa' },
+  { icon: MessageCircle, title: 'Para cualquier ocasión', desc: 'Aniversario, cumpleaños, o simplemente un martes cualquiera.', whatsapp: 'https://wa.me/59170000000?text=Quiero%20una%20carta%20para%20una%20ocasi%C3%B3n%20especial' },
+]
+
+const digitalServices = [
+  { icon: Code, title: 'Cartas en HTML', desc: 'Cartas digitales interactivas con animaciones. Se envían por enlace y se ven en cualquier navegador.', cta: 'Ver ejemplo', whatsapp: 'https://wa.me/59170000000?text=Quiero%20una%20carta%20en%20HTML', isPreview: true },
+  { icon: Monitor, title: 'Páginas web', desc: 'Desarrollo web a medida para emprendedores y negocios. Diseño premium, responsive y optimizado.', cta: 'Cotizar proyecto', whatsapp: 'https://wa.me/59170000000?text=Quiero%20cotizar%20una%20p%C3%A1gina%20web' },
+  { icon: BookOpen, title: 'Catálogos digitales', desc: 'Catálogos interactivos para mostrar tus productos con fotos, precios y enlace directo a WhatsApp.', cta: 'Cotizar proyecto', whatsapp: 'https://wa.me/59170000000?text=Quiero%20cotizar%20un%20cat%C3%A1logo%20digital' },
+  { icon: Utensils, title: 'Menús digitales', desc: 'Menús QR interactivos para restaurantes. Tus clientes escanean y ven la carta completa en su celular.', cta: 'Cotizar proyecto', whatsapp: 'https://wa.me/59170000000?text=Quiero%20cotizar%20un%20men%C3%BA%20digital' },
+]
+
+const faqs = [
+  { q: '¿Cómo personalizo mi carta?', a: 'Nos escribes por WhatsApp con tu mensaje, nombres y cualquier detalle. Nosotros la diseñamos y te enviamos vista previa.', category: 'fisico' },
+  { q: '¿Cuánto cuesta una carta?', a: 'Desde 20 Bs la carta simple hasta 50 Bs la versión premium con sobre lacrado y caligrafía a mano.', category: 'fisico' },
+  { q: '¿Realizan envíos a todo Bolivia?', a: 'Sí, a cualquier ciudad. El tiempo de entrega es de 2 a 5 días hábiles dependiendo la ubicación.', category: 'fisico' },
+  { q: '¿Puedo pedir varias cartas?', a: 'Claro, paquetes para eventos o regalos corporativos. Consulta sin compromiso.', category: 'fisico' },
+  { q: '¿Qué son las cartas en HTML?', a: 'Son cartas digitales interactivas con animaciones, fotos y diseño cuidado. Se envían por enlace y quien las recibe las abre en su navegador como una experiencia inmersiva.', category: 'digital' },
+  { q: '¿Cuánto cuesta una página web / catálogo digital?', a: 'Desde 150 Bs un menú digital o catálogo simple, hasta 500 Bs una web completa con varias páginas. Todo depende de la complejidad.', category: 'digital' },
+  { q: '¿Entregan el código fuente?', a: 'Sí, 100% tuyo. Te entregamos todo el código y te ayudamos a publicarlo. No quedas atado a nosotros.', category: 'digital' },
+  { q: '¿Qué tecnología usan para las webs?', a: 'Next.js, Tailwind CSS y TypeScript. Desplegamos en Vercel con rendimiento ultrarrápido y SEO optimizado.', category: 'digital' },
+  { q: '¿Cuánto tiempo toma desarrollar un menú digital?', a: 'Entre 3 y 5 días hábiles. Los catálogos y webs más complejos pueden tomar de 5 a 10 días.', category: 'digital' },
+  { q: '¿Hacen mantenimiento?', a: 'Sí, ofrecemos planes mensuales de mantenimiento y soporte técnico. Consulta sin compromiso.', category: 'digital' },
+]
 
 export default function Home() {
   const { scrollYProgress } = useScroll()
   const opacityHero = useTransform(scrollYProgress, [0, 0.3], [1, 0])
   const scaleHero = useTransform(scrollYProgress, [0, 0.3], [1, 0.98])
 
-  // Datos mock para galería (usar imágenes reales)
-  const galleryImages = [
-    { src: '/carta1.jpg', alt: 'Carta abierta con caligrafía', size: 'tall' },
-    { src: '/sobre-sello.jpg', alt: 'Sobre con sello de lacre', size: 'wide' },
-    { src: '/carta-detalle.jpg', alt: 'Detalle de papel texturizado', size: 'square' },
-    { src: '/manos-carta.jpg', alt: 'Manos sosteniendo carta', size: 'tall' },
-  ]
-
   return (
     <>
       <FloatingWhatsApp />
       <main className="paper-texture">
-        {/* SECCIÓN 1: HERO EMOCIONAL - PANTALLA COMPLETA */}
+        {/* HERO */}
         <section className="relative h-screen flex items-center justify-center overflow-hidden">
           <motion.div style={{ opacity: opacityHero, scale: scaleHero }} className="absolute inset-0 z-0">
             <div className="absolute inset-0 bg-gradient-to-b from-paper/90 via-paper/70 to-paper/90" />
@@ -34,7 +58,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.2 }}
-              className="heading-serif text-ink"
+              className="heading-serif text-ink text-5xl md:text-7xl"
             >
               No todas las palabras deberían quedarse sin decir.
             </motion.h1>
@@ -44,13 +68,13 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.5 }}
               className="body-text mt-8 text-ink/70 max-w-2xl mx-auto"
             >
-              Una carta física no se borra con un dedo. Perdura en cajones, en libros, en recuerdos.
+              Cartas que quedan para siempre. Código que construye presencia.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.8 }}
-              className="mt-12"
+              className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4"
             >
               <a
                 href="https://wa.me/59170000000?text=Quiero%20crear%20mi%20carta%20personalizada"
@@ -59,6 +83,15 @@ export default function Home() {
                 className="inline-flex items-center gap-2 bg-accent text-paper px-8 py-4 rounded-full text-lg font-medium hover:bg-detail transition-all duration-300 shadow-lg hover:shadow-xl"
               >
                 Crear mi carta <ChevronRight size={20} />
+              </a>
+              <a
+                href="https://wa.me/59170000000?text=Quiero%20cotizar%20un%20proyecto%20digital"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 border-2 border-accent/30 text-accent px-8 py-4 rounded-full text-lg font-medium hover:border-accent hover:bg-accent/5 transition-all duration-300"
+              >
+                <Code size={20} />
+                Cotizar proyecto digital
               </a>
             </motion.div>
           </div>
@@ -74,7 +107,7 @@ export default function Home() {
           </motion.div>
         </section>
 
-        {/* SECCIÓN 2: HISTORIA EMOCIONAL (storytelling asimétrico) */}
+        {/* HISTORIA EMOCIONAL */}
         <section className="py-24 md:py-32 relative">
           <div className="container-premium">
             <div className="grid md:grid-cols-2 gap-16 items-center">
@@ -110,35 +143,76 @@ export default function Home() {
           </div>
         </section>
 
-        {/* SECCIÓN 3: EXPERIENCIAS (situaciones) */}
+        {/* LO QUE HACEMOS */}
         <section className="py-24 bg-ink/5">
           <div className="container-premium">
             <ScrollReveal>
-              <h2 className="heading-serif text-center text-4xl md:text-5xl">Lo que sientes, lo que necesitas decir</h2>
-              <p className="body-text text-center text-ink/60 max-w-2xl mx-auto mt-4">No hay ocasión pequeña cuando el corazón habla.</p>
+              <h2 className="heading-serif text-center text-4xl md:text-5xl">Lo que hacemos</h2>
+              <p className="body-text text-center text-ink/60 max-w-2xl mx-auto mt-4">
+                Productos que emocionan. Tecnología que impulsa.
+              </p>
             </ScrollReveal>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-16">
-              {[
-                { icon: Heart, title: 'Quiero pedir perdón', desc: 'Un "lo siento" escrito a mano pesa más que mil disculpas rápidas.' },
-                { icon: Feather, title: 'Quiero sorprender', desc: 'Porque la rutina mata lo especial. Sorpréndele sin motivo.' },
-                { icon: Clock, title: 'Quiero agradecer', desc: 'A un amigo, a un padre, a quien estuvo ahí sin pedir nada.' },
-                { icon: MapPin, title: 'Quiero decir te amo', desc: 'Las tres palabras que merecen un papel, no una pantalla.' },
-                { icon: MessageCircle, title: 'Quiero recuperar una relación', desc: 'Una carta puede abrir puertas que el orgullo cerró.' },
-                { icon: Heart, title: 'Para cualquier ocasión', desc: 'Aniversario, cumpleaños, o simplemente un martes cualquiera.' },
-              ].map((item, idx) => (
-                <ScrollReveal key={idx} delay={idx * 0.05}>
-                  <div className="group bg-paper p-6 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-accent-light/20">
-                    <item.icon className="w-10 h-10 text-accent mb-4" />
-                    <h3 className="font-serif text-xl font-medium">{item.title}</h3>
-                    <p className="mt-2 text-ink/70 text-sm leading-relaxed">{item.desc}</p>
-                  </div>
-                </ScrollReveal>
-              ))}
+
+            {/* Bloque A: Productos físicos */}
+            <div className="mt-20">
+              <ScrollReveal>
+                <div className="flex items-center gap-3 mb-8">
+                  <div className="w-8 h-px bg-accent/40" />
+                  <span className="text-xs uppercase tracking-[0.2em] text-accent font-medium">Cartas físicas</span>
+                  <div className="flex-1 h-px bg-accent/20" />
+                </div>
+              </ScrollReveal>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {physicalServices.map((item, idx) => (
+                  <ScrollReveal key={idx} delay={idx * 0.05}>
+                    <a
+                      href={item.whatsapp}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block group bg-paper p-6 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-accent-light/20"
+                    >
+                      <item.icon className="w-10 h-10 text-accent mb-4" />
+                      <h3 className="font-serif text-xl font-medium">{item.title}</h3>
+                      <p className="mt-2 text-ink/70 text-sm leading-relaxed">{item.desc}</p>
+                    </a>
+                  </ScrollReveal>
+                ))}
+              </div>
+            </div>
+
+            {/* Bloque B: Servicios digitales */}
+            <div className="mt-20">
+              <ScrollReveal>
+                <div className="flex items-center gap-3 mb-8">
+                  <div className="w-8 h-px bg-accent/40" />
+                  <span className="text-xs uppercase tracking-[0.2em] text-accent font-medium">Servicios digitales</span>
+                  <div className="flex-1 h-px bg-accent/20" />
+                </div>
+              </ScrollReveal>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {digitalServices.map((item, idx) => (
+                  <ScrollReveal key={idx} delay={idx * 0.05}>
+                    <div className="group bg-paper p-6 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-accent-light/20 flex flex-col h-full">
+                      <item.icon className="w-10 h-10 text-accent mb-4" />
+                      <h3 className="font-serif text-xl font-medium">{item.title}</h3>
+                      <p className="mt-2 text-ink/70 text-sm leading-relaxed flex-1">{item.desc}</p>
+                      <a
+                        href={item.whatsapp}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-xs text-accent hover:text-detail transition-colors mt-4 font-medium"
+                      >
+                        {item.cta} <ExternalLink size={12} />
+                      </a>
+                    </div>
+                  </ScrollReveal>
+                ))}
+              </div>
             </div>
           </div>
         </section>
 
-        {/* SECCIÓN 4: GALERÍA PREMIUM (Pinterest editorial) */}
+        {/* GALERÍA DETALLES */}
         <section className="py-24">
           <div className="container-premium">
             <ScrollReveal>
@@ -154,7 +228,6 @@ export default function Home() {
                         <div className="text-accent font-serif italic text-sm">[Mockup carta {i + 1}]</div>
                         <div className="mt-4 w-20 h-20 border border-accent/30 rounded-full mx-auto" />
                       </div>
-                      {/* En producción: reemplazar con imágenes reales <Image src={...} /> */}
                     </div>
                   </div>
                 </ScrollReveal>
@@ -163,38 +236,19 @@ export default function Home() {
           </div>
         </section>
 
-        {/* SECCIÓN 5: CÓMO FUNCIONA (4 pasos) */}
-        <section className="py-24 bg-paper relative">
-          <div className="container-premium">
-            <ScrollReveal>
-              <h2 className="heading-serif text-center text-4xl">Crear tu carta es más sencillo de lo que crees</h2>
-            </ScrollReveal>
-            <div className="grid md:grid-cols-4 gap-8 mt-16">
-              {[
-                { step: '01', title: 'Nos cuentas tu historia', desc: 'Por WhatsApp o formulario. Qué quieres decir, a quién, por qué.' },
-                { step: '02', title: 'Creamos tu carta', desc: 'Diseño único, caligrafía o tipografía elegante, papel premium.' },
-                { step: '03', title: 'La entregamos', desc: 'En sobre lacrado. Envíos a toda Bolivia con cuidado de joya.' },
-                { step: '04', title: 'Generas un recuerdo', desc: 'Esa carta se guardará por años. Un objeto con alma.' },
-              ].map((item, idx) => (
-                <ScrollReveal key={idx} delay={idx * 0.1}>
-                  <div className="text-center group">
-                    <div className="text-6xl font-serif text-accent-light/30 group-hover:text-accent/50 transition-colors">{item.step}</div>
-                    <h3 className="font-serif text-xl mt-4">{item.title}</h3>
-                    <p className="mt-2 text-sm text-ink/70">{item.desc}</p>
-                  </div>
-                </ScrollReveal>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* CÓMO FUNCIONA (ServiceSelector) */}
+        <ServiceSelector />
 
-        {/* SECCIÓN 6: PRUEBA SOCIAL (formato chat / real) */}
+        {/* PORTAFOLIO */}
+        <PortfolioGallery />
+
+        {/* PRUEBA SOCIAL */}
         <section className="py-24">
           <div className="container-premium">
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <ScrollReveal>
                 <div className="space-y-6">
-                  <h2 className="font-serif text-3xl md:text-4xl">Lo que dicen quienes ya recibieron una carta</h2>
+                  <h2 className="font-serif text-3xl md:text-4xl">Lo que dicen quienes ya confiaron en nosotros</h2>
                   <div className="bg-ink/5 p-6 rounded-sm italic text-ink/80">
                     "Nunca imaginé que unas palabras escritas a mano pudieran hacerme llorar así. Gracias BoliviaCode por ayudarme a pedir perdón."
                     <footer className="mt-3 text-accent text-sm not-italic">— Valeria S., Santa Cruz</footer>
@@ -203,7 +257,10 @@ export default function Home() {
                     "Mi novia vive en Cochabamba y yo en La Paz. La carta llegó justo el día de nuestro aniversario. Fue mágico."
                     <footer className="mt-3 text-accent text-sm not-italic">— Andrés M.</footer>
                   </div>
-                  {/* Captura tipo chat */}
+                  <div className="bg-ink/5 p-6 rounded-sm italic text-ink/80">
+                    "Necesitaba un menú digital urgente para mi restaurante y lo tuvieron listo en 4 días. Mis clientes aman el QR."
+                    <footer className="mt-3 text-accent text-sm not-italic">— Carla R., restaurante en La Paz</footer>
+                  </div>
                   <div className="border border-accent-light/30 rounded-2xl p-4 max-w-sm">
                     <div className="flex items-center gap-2 text-xs text-ink/50 mb-2">WhatsApp · hace 2 días</div>
                     <div className="bg-accent/10 p-3 rounded-xl rounded-tl-none">💬 Me llegó la carta, no sabes cómo le gustó 🥹</div>
@@ -212,9 +269,11 @@ export default function Home() {
               </ScrollReveal>
               <ScrollReveal delay={0.2}>
                 <div className="relative aspect-square bg-gradient-to-br from-accent-light/10 to-transparent rounded-sm flex items-center justify-center">
-                  <div className="text-center">
+                  <div className="text-center p-8">
                     <p className="text-6xl font-serif text-accent/30">"</p>
                     <p className="font-serif italic text-xl">Una carta es un abrazo de papel.</p>
+                    <div className="w-16 h-px bg-accent/30 mx-auto my-6" />
+                    <p className="font-serif italic text-lg text-ink/60">El código es un puente al futuro.</p>
                   </div>
                 </div>
               </ScrollReveal>
@@ -222,24 +281,24 @@ export default function Home() {
           </div>
         </section>
 
-        {/* SECCIÓN 7: FAQ elegante (acordeón) */}
+        {/* FAQ */}
         <section className="py-24 bg-paper border-t border-accent-light/20">
           <div className="container-premium max-w-3xl mx-auto">
             <ScrollReveal>
               <h2 className="heading-serif text-center text-4xl">Preguntas frecuentes</h2>
             </ScrollReveal>
             <div className="mt-12 space-y-4">
-              {[
-                { q: '¿Cómo personalizo mi carta?', a: 'Nos escribes por WhatsApp con tu mensaje, nombres y cualquier detalle. Nosotros la diseñamos y te enviamos vista previa.' },
-                { q: '¿Cuánto cuesta?', a: 'Desde 20 Bs la carta simple hasta 50 Bs la versión premium con sobre lacrado y caligrafía a mano.' },
-                { q: '¿Realizan envíos a todo Bolivia?', a: 'Sí, a cualquier ciudad. El tiempo de entrega es de 2 a 5 días hábiles dependiendo la ubicación.' },
-                { q: '¿Puedo pedir varias cartas?', a: 'Claro, paquetes para eventos o regalos corporativos. Consulta sin compromiso.' },
-              ].map((faq, idx) => (
-                <ScrollReveal key={idx} delay={idx * 0.05}>
+              {faqs.map((faq, idx) => (
+                <ScrollReveal key={idx} delay={idx * 0.03}>
                   <details className="group border-b border-accent-light/30 pb-4">
                     <summary className="flex justify-between items-center cursor-pointer list-none py-3 font-medium text-lg">
-                      {faq.q}
-                      <ChevronRight className="w-5 h-5 transition-transform group-open:rotate-90" />
+                      <span>
+                        {faq.q}
+                        {faq.category === 'digital' && (
+                          <span className="ml-2 text-[10px] uppercase tracking-wider text-accent border border-accent/30 px-2 py-0.5 rounded-full align-middle">Digital</span>
+                        )}
+                      </span>
+                      <ChevronRight className="w-5 h-5 transition-transform group-open:rotate-90 shrink-0" />
                     </summary>
                     <p className="text-ink/70 pb-3 pl-2">{faq.a}</p>
                   </details>
@@ -249,7 +308,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* SECCIÓN 8: CTA FINAL (impacto visual) */}
+        {/* CTA FINAL */}
         <section className="py-32 bg-gradient-to-b from-paper to-accent-light/10 relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none" style={{ backgroundImage: 'url(/pattern-seal.png)', backgroundRepeat: 'repeat' }} />
           <div className="container-premium text-center relative z-10">
@@ -257,17 +316,26 @@ export default function Home() {
               <h2 className="heading-serif text-4xl md:text-6xl">Escribe lo que el silencio no pudo decir</h2>
               <div className="w-24 h-0.5 bg-accent/40 mx-auto my-8" />
               <p className="body-text text-ink/80 max-w-2xl mx-auto">
-                No dejes pasar otra oportunidad. Una carta puede cambiar una relación, sanar una herida o regalar una sonrisa eterna.
+                Una carta, una web, un menú digital. Sea lo que necesites, lo creamos con el mismo cuidado.
               </p>
-              <div className="mt-12">
+              <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a
                   href="https://wa.me/59170000000?text=Quiero%20crear%20mi%20carta%20personalizada"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-3 bg-accent text-paper px-10 py-5 rounded-full text-xl font-medium hover:bg-detail transition-all shadow-2xl hover:shadow-3xl"
                 >
-                  <MessageCircle size={24} />
-                  Crear mi carta por WhatsApp
+                  <Heart size={24} />
+                  Quiero una carta
+                </a>
+                <a
+                  href="https://wa.me/59170000000?text=Quiero%20cotizar%20un%20proyecto%20digital"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 border-2 border-accent/30 text-accent px-10 py-5 rounded-full text-xl font-medium hover:border-accent hover:bg-accent/5 transition-all shadow-xl"
+                >
+                  <Code size={24} />
+                  Quiero un proyecto digital
                 </a>
               </div>
               <p className="text-xs text-ink/40 mt-8">Respuesta en menos de 1 hora · Pago seguro contra entrega o transferencia</p>
@@ -275,9 +343,19 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Footer simple y elegante */}
-        <footer className="py-12 border-t border-accent-light/20 text-center text-ink/50 text-sm">
-          <p>© 2025 BoliviaCode – Cartas que trascienden el tiempo. Hecho a mano en Bolivia.</p>
+        {/* FOOTER */}
+        <footer className="py-12 border-t border-accent-light/20">
+          <div className="container-premium text-center">
+            <div className="flex flex-wrap justify-center gap-6 mb-6 text-sm text-ink/50">
+              <a href="#" className="hover:text-accent transition-colors">Inicio</a>
+              <a href="#portfolio" className="hover:text-accent transition-colors">Portafolio</a>
+              <a href="#" className="hover:text-accent transition-colors">Políticas de privacidad</a>
+              <a href="#" className="hover:text-accent transition-colors">Términos de servicio</a>
+            </div>
+            <p className="text-ink/50 text-sm">
+              © 2025 BoliviaCode – Cartas que trascienden el tiempo. Código que construye presencia. Hecho a mano en Bolivia.
+            </p>
+          </div>
         </footer>
       </main>
     </>

@@ -9,14 +9,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        paper: "#FAF7F2",
-        ink: "#2C2418",
-        accent: "#8B6914",
-        "accent-light": "#C4A35A",
-        detail: "#5C4A1E",
+        paper: "#F8F5F0",
+        ink: "#1F1F1F",
+        accent: "#8B5E3C",
+        "accent-light": "#C7A17A",
+        detail: "#6D4C41",
       },
       fontFamily: {
-        serif: ["Georgia", "Cambria", "Times New Roman", "Times", "serif"],
+        serif: ["Playfair Display", "Georgia", "Times New Roman", "Times", "serif"],
         sans: ["Inter", "system-ui", "sans-serif"],
       },
     },
