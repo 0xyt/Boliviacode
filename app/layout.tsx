@@ -15,8 +15,8 @@ const playfair = Playfair_Display({
 })
 
 export const metadata: Metadata = {
-  title: 'Cartas Personalizadas y Desarrollo Web en Bolivia | BoliviaCode',
-  description: 'Cartas físicas y digitales personalizadas + desarrollo web, catálogos y menús digitales para negocios en Bolivia. Experiencia emocional y tecnología.',
+  title: 'Dedicatorias Animadas en HTML y Páginas Web en Bolivia | BoliviaCode',
+  description: 'Dedicatorias interactivas con Canvas y JavaScript. Páginas web, catálogos digitales y menús QR para negocios. Entregas rápidas en Bolivia.',
 }
 
 export default function RootLayout({

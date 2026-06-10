@@ -20,11 +20,6 @@ body {
   background-size: cover;
 }
 
-.paper-texture-dark {
-  background-image: url('/paper-texture-dark.png');
-  background-size: cover;
-}
-
 .container-premium {
   max-width: 1200px;
   margin-left: auto;
@@ -42,13 +37,4 @@ body {
 .body-text {
   font-family: 'Inter', system-ui, sans-serif;
   line-height: 1.7;
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
 }
